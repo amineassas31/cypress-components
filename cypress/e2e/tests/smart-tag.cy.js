@@ -15,7 +15,9 @@ describe('Smart Tag Component', () => {
         cy.contains('div', 'See more').trigger('mouseover');
         cy.contains('div', 'Lorem ipsum').should('be.visible');
 
-        cy.contains('div', 'See more').trigger('mouseout');
+        cy.get('body').trigger('mouseover', { force: true, bubbles: true });
+
+        cy.wait(300);
 
         cy.contains('div', 'Lorem ipsum').should('not.be.visible');
     });
