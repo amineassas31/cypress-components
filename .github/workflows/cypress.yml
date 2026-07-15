@@ -45,3 +45,13 @@ jobs:
         with:
           name: cypress-report
           path: cypress/reports
+
+      - name: Notifier Discord
+        if: always()
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          title: "Build Cypress"
+          description: "Un build a été généré suite à un push sur ${{ github.repository }}"
+          color: ${{ job.status == 'success' && '0x00ff00' || '0xff0000' }}
+          url: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
