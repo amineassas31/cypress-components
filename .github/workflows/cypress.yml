@@ -8,6 +8,7 @@ on:
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout du code
         uses: actions/checkout@v4
@@ -18,13 +19,13 @@ jobs:
           node-version: 20
 
       - name: Installer les dépendances
-        run: npm install
+        run: npm ci
 
-      - name: Démarrer le serveur local
-        run: npx http-server -p 5500 &
+      - name: Démarrer le serveur local en arrière-plan
+        run: nohup npx http-server -p 5500 > server.log 2>&1 &
 
       - name: Attendre que le serveur soit prêt
-        run: npx wait-on http://localhost:5500
+        run: npx wait-on http://localhost:5500 --timeout 60000
 
       - name: Lancer les tests Cypress
         uses: cypress-io/github-action@v6
